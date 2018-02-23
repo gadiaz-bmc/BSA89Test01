@@ -1,0 +1,84 @@
+{
+  "name" : "Quick TEst",
+  "path" : "/User Space/nnyante/00480380",
+  "service" : {
+    "allowedOperations" : [ "DISCOVER", "BROWSE", "SNAPSHOT", "AUDIT" ],
+    "extendedObjects" : [ {
+      "name" : "Another Test",
+      "os" : "Linux",
+      "encoding" : "Default",
+      "grammar" : "generic.gm",
+      "script" : "nsh -c \"echo '\\\"'\"",
+      "remoteExecution" : false
+    }, {
+      "name" : "Which grep",
+      "os" : "Linux",
+      "encoding" : "Default",
+      "grammar" : "generic.gm",
+      "script" : "which grep",
+      "remoteExecution" : false
+    }, {
+      "name" : "Yet another",
+      "os" : "Linux",
+      "encoding" : "Default",
+      "grammar" : "generic.gm",
+      "script" : "nsh -c \"which expr\"",
+      "remoteExecution" : false
+    }, {
+      "name" : "echo \"test\"; echo \"test1\"",
+      "os" : "Linux",
+      "encoding" : "Default",
+      "grammar" : "generic.gm",
+      "script" : "echo \"test\"; echo \"test1\"",
+      "remoteExecution" : true
+    }, {
+      "name" : "grep test",
+      "os" : "Linux",
+      "encoding" : "Default",
+      "grammar" : "generic.gm",
+      "script" : "grep root /etc/passwd | grep root",
+      "remoteExecution" : false
+    } ],
+    "parts" : [ {
+      "name" : "Another Test",
+      "allowedOperations" : [ "BROWSE" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "Which grep",
+      "allowedOperations" : [ "BROWSE" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "Yet another",
+      "allowedOperations" : [ "BROWSE" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "echo \"test\"; echo \"test1\"",
+      "allowedOperations" : [ "BROWSE", "SNAPSHOT", "AUDIT" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "echo $(uname -a)",
+      "allowedOperations" : [ "BROWSE", "SNAPSHOT", "AUDIT" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "echo PATH",
+      "allowedOperations" : [ "BROWSE" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    }, {
+      "name" : "grep test",
+      "allowedOperations" : [ "BROWSE" ],
+      "type" : "Extended Object",
+      "recurseSubfolders" : true
+    } ]
+  },
+  "policy" : {
+    "ruleGroups" : [ {
+      "name" : "Default"
+    } ]
+  }
+}
