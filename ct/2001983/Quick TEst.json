@@ -2,6 +2,7 @@
   "name" : "Quick TEst",
   "path" : "/User Space/nnyante/00480380",
   "service" : {
+    "notes" : "Test template.",
     "allowedOperations" : [ "DISCOVER", "BROWSE", "SNAPSHOT", "AUDIT" ],
     "extendedObjects" : [ {
       "name" : "Another Test",
