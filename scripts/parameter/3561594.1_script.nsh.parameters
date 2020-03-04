@@ -1,0 +1,14 @@
+{
+  "name" : "EDG_Script_blcli_AgentCleanup",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false,
+  "nshScriptParams" : [ {
+    "name" : "TargetName",
+    "index" : 1,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??NAME??",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  } ]
+}

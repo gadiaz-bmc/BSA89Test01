@@ -1,0 +1,8 @@
+JOB_DB_KEY=`blcli AuditJob getDBKeyByGroupAndName "/User Space/gechegol/Case_00465163/Audit Job" "JBoss domain.ear audit"` 
+echo $JOB_DB_KEY
+JOB_RUN_KEY=`blcli -v ADDefault JobRun findLastRunKeyByJobKey $JOB_DB_KEY`
+echo $JOB_RUN_KEY
+JOB_RUN_ID=`blcli JobRun jobRunKeyToJobRunId $JOB_RUN_KEY`
+echo $JOB_RUN_ID
+AUDIT_RUN_EXPORT=`blcli Utility exportAuditRun "/User Space/gechegol/Case_00465163" "Jboss" "/User Space/gechegol/Case_00465163/Audit Job" "JBoss domain.ear audit" $JOB_RUN_ID "/tmp/sampleJobResult.csv" "CSV"`
+echo $AUDIT_RUN_EXPORT

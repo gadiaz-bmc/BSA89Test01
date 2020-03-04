@@ -1,0 +1,14 @@
+{
+  "name" : "rscd_mem_info",
+  "scriptType" : "Execute the script once, passing the host list as a parameter to the script",
+  "allowRunWithNoTarget" : true,
+  "nshScriptParams" : [ {
+    "name" : "Target",
+    "index" : 1,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "%h",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  } ]
+}

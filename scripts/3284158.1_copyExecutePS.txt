@@ -1,0 +1,1 @@
+nexec -D //clm-aus-ssmxtq/C -i -l clm-aus-ssmxtq cmd /c "powershell -inputformat NONE ServerName.ps1"

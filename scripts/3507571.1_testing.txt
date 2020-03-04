@@ -1,0 +1,2 @@
+#!/usr/bin/nsh
+nexec -i clm-aus-th971f.bmc.com cmd /c "start C:\temp\rscd_mem_leak\gatherMemInfo.bat"

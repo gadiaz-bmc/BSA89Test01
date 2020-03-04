@@ -1,0 +1,28 @@
+#!/bin/nsh
+
+#set -x
+
+#cd //@
+
+ReplyAddress="bladelogic@bmc.com"
+
+ToAddress="steve_green@bmc.com"
+
+Dir="/tmp"
+
+File="test.txt"
+
+
+
+# This one will fail
+
+#blcli_execute Email sendMailWithAttachment "$ReplyAddress" "$ToAddress" "This fails" "Body" "$Dir" "$File"
+blcli_execute Email sendMailWithAttachment "$ReplyAddress" "$ToAddress" "This fails" "Message" "$Dir" "$File"
+
+#blcli_execute Email sendMailWithAttachment "${ReplyAddress}" "${ToAddress}" "This does not work" "Body" "${Dir}" "${File}"
+
+
+
+# This one works
+
+#blcli Email sendMailWithAttachment "$ReplyAddress" "$ToAddress" "This works" "Body" "$Dir" "$File" 

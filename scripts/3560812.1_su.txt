@@ -1,0 +1,2 @@
+su - admin -c "whoami;hostname"
+rsu -p admin "whoami"

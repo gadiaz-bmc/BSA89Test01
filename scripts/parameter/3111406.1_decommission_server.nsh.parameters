@@ -1,0 +1,14 @@
+{
+  "name" : "NSHScript",
+  "scriptType" : "Execute the script once, passing the host list as a parameter to the script",
+  "allowRunWithNoTarget" : false,
+  "nshScriptParams" : [ {
+    "name" : "serverlist",
+    "index" : 1,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "%h",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  } ]
+}

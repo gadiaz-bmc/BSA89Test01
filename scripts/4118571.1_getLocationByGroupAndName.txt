@@ -1,0 +1,5 @@
+#!/bin/nsh
+
+fileLocation=$(blcli DepotFile getLocationByGroupAndName "/Workspace/sgreen" "test.txt")
+echo "${fileLocation}"
+. "${fileLocation}"

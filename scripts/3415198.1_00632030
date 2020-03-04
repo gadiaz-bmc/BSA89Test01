@@ -1,0 +1,12 @@
+#!/bin/nsh
+#JOB_PATH="/Workspace/fflorese"
+#JOB_NAME="10020013 - Reinsurance - RH7 Monthly OS Patch - CLRINAPP1"
+JOB_PATH="/Workspace/fflores"
+JOB_NAME="10020101 - BSA - RH7 Monthly OS Patch - SSBSAPHP2"
+echo $JOB_PATH
+echo $JOB_NAME
+JOB_KEY=`blcli_execute BatchJob getDBKeyByGroupAndName "${JOB_PATH}" "${JOB_NAME}"`
+echo $JOB_KEY
+blcli_execute Schedule findScheduleDetailsByJobKey "${JOB_KEY}"
+blcli_storeenv JOB_SCHED
+#blcli Schedule findScheduleDetailsByExecutingUser 073@gwl.bz

@@ -1,0 +1,38 @@
+{
+  "name" : "AddServersToStaticGroup",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false,
+  "nshScriptParams" : [ {
+    "name" : "Folder",
+    "index" : 1,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "/C",
+    "valueRequiredAtRuntime" : false,
+    "editable" : true
+  }, {
+    "name" : "Import Filename",
+    "index" : 2,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "import.txt",
+    "valueRequiredAtRuntime" : false,
+    "editable" : true
+  }, {
+    "name" : "Parent Group",
+    "index" : 3,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "User_Space",
+    "valueRequiredAtRuntime" : false,
+    "editable" : true
+  }, {
+    "name" : "Group Name",
+    "index" : 4,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "sgreen",
+    "valueRequiredAtRuntime" : false,
+    "editable" : true
+  } ]
+}

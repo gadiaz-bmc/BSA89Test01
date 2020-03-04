@@ -1,0 +1,23 @@
+#!/bin/nsh
+
+for SERVERNAME in $1
+do
+
+blcli_execute Server getServerIdByName $SERVERNAME
+blcli_storeenv SERVERID
+ 
+SERVER_GROUP1="/test"
+ 
+blcli_execute ServerGroup groupNameToId $SERVER_GROUP1
+blcli_storeenv GROUPID
+
+#blcli_execute Server getServerNameById $SERVERID
+#blcli_storeenv SERVERNAME
+
+#blcli_execute Server listServersInGroup "$SERVER_GROUP1" | grep -q "$SERVERNAME"
+#if [ $? -eq 1 ]
+#then
+blcli_execute StaticServerGroup addServerToServerGroup $GROUPID $SERVERID
+#fi
+
+done

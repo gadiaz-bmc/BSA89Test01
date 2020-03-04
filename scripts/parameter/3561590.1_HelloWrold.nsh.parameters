@@ -1,0 +1,6 @@
+{
+  "name" : "Testing_Mapping_To_Local_User_Linux",
+  "description" : "Testing_Mapping_To_Local_User via NSH type 3",
+  "scriptType" : "Copy and execute the script against each host separately (for non-NSH scripts)",
+  "allowRunWithNoTarget" : false
+}

@@ -1,0 +1,5 @@
+{
+  "name" : "NSH_STDOUT_Smita_Case",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false
+}

@@ -1,0 +1,3 @@
+#!/bin/nsh
+
+blcli_execute Delete checkFileServerIntegrity >/tmp/checkFileServerIntegrity.txt

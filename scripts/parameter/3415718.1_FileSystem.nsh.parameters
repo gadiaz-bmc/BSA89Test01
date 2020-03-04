@@ -1,0 +1,5 @@
+{
+  "name" : "00636560_ExtendedObject",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false
+}

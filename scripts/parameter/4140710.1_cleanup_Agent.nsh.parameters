@@ -1,0 +1,79 @@
+{
+  "name" : "Agent_Cleanup_Latest",
+  "description" : "Downloaded from \\\\lex-netapp-01b.int.bladelogic.com\\pub\\Maria\\CUSTOMERS_DEBUG_HOTFIX\\OUTGOING\\CleanupAgent_Script\\All-Customers-GiveThisVersion",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false,
+  "nshScriptParams" : [ {
+    "name" : "DEBUG_LEVEL",
+    "index" : 1,
+    "flag" : "-d",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "3",
+    "valueRequiredAtRuntime" : true,
+    "editable" : false
+  }, {
+    "name" : "HOST",
+    "index" : 2,
+    "flag" : "-h",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??TARGET.NAME??",
+    "valueRequiredAtRuntime" : true,
+    "editable" : false
+  }, {
+    "name" : "RETENTION",
+    "index" : 3,
+    "flag" : "-r",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "15",
+    "valueRequiredAtRuntime" : true,
+    "editable" : false
+  }, {
+    "name" : "STAGING_DIR",
+    "index" : 4,
+    "flag" : "-s",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??TARGET.STAGING_DIR??",
+    "valueRequiredAtRuntime" : true,
+    "editable" : false
+  }, {
+    "name" : "Transaction_DIR",
+    "index" : 5,
+    "flag" : "-t",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??TARGET.TRANSACTIONS_DIR??",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  }, {
+    "name" : "RSCD_DIR",
+    "index" : 6,
+    "flag" : "-a",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??TARGET.RSCD_DIR??",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  }, {
+    "name" : "DATE_TYPE",
+    "index" : 7,
+    "flag" : "-m",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "mtime",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  }, {
+    "name" : "RSCD_TMP",
+    "index" : 8,
+    "flag" : "-v",
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "defaultValue" : "??TARGET.RSCD_DIR??/tmp",
+    "valueRequiredAtRuntime" : false,
+    "editable" : false
+  } ]
+}

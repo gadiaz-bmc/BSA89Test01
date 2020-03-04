@@ -1,0 +1,35 @@
+{
+  "name" : "NSH_Script_Case_00514645_Parameters",
+  "description" : "NSH Script to export the logs",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false,
+  "nshScriptParams" : [ {
+    "name" : "JOB_GROUP",
+    "index" : 1,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "valueRequiredAtRuntime" : true,
+    "editable" : true
+  }, {
+    "name" : "JOB_NAME",
+    "index" : 2,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "valueRequiredAtRuntime" : true,
+    "editable" : true
+  }, {
+    "name" : "PATH_TO_EXPORT",
+    "index" : 3,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "valueRequiredAtRuntime" : true,
+    "editable" : true
+  }, {
+    "name" : "EXPORT_FILE_NAME",
+    "index" : 4,
+    "parameterFlagRequired" : false,
+    "acceptValue" : true,
+    "valueRequiredAtRuntime" : true,
+    "editable" : true
+  } ]
+}

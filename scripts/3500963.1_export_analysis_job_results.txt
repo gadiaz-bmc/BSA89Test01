@@ -1,0 +1,187 @@
+#!/bin/nsh
+zmodload zsh/datetime
+blcli_setjvmoption -Dcom.bladelogic.cli.execute.quietmode.enabled=true
+PROFILE_NAME="clm-aus-017854-SRP"
+ROLE_NAME="BLAdmins"
+ 
+check_errs()
+{
+                # Function. Parameter 1 is the return code
+                # Para. 2 is text to display on failure.
+                if [[ ${1} -ne 0 ]]
+                                then
+                                echo "ERROR # ${1} : ${2}"
+                                # as a bonus, make our script exit with the right error code.
+                                exit ${1}
+                fi
+}
+ 
+print_debug()
+{
+                if [ "${DEBUG}" = "true" ]
+                                then
+                                echo " "
+                                echo "DEBUG: $@"
+                fi
+}
+ 
+print_info()
+{
+                echo " "
+                echo "INFO: $@"
+}
+ 
+if [[ "${CLI_INTERACTIVE}" != "false" ]]
+                then
+                blcli_setoption roleName ${ROLE_NAME}
+                blcli_setoption serviceProfileName "${PROFILE_NAME}"
+fi
+ 
+blcli_connect
+ 
+processRemediationJobResult()
+{
+                blcli_execute JobRun findById ${PATCHING_JOB_RUN_ID}
+                blcli_execute JobRun getJobKey
+                blcli_storeenv jobKey
+                blcli_execute JobRun getJobRunKey
+                blcli_storeenv jobRunKey
+                blcli_execute JobRun getStartTimeByRunKey ${jobRunKey}
+                blcli_storeenv startTime
+                blcli_execute Job findByDBKey ${jobKey}
+                blcli_execute Job getName
+                blcli_storeenv jobName
+                blcli_execute Job getGroupId
+                blcli_storeenv jobGroupId
+                blcli_execute Group getQualifiedGroupName 5005 ${jobGroupId}
+                blcli_storeenv groupPath
+                
+                echo "Processing Results for: ${groupPath}/${jobName} started at ${startTime}..."
+                blcli_execute JobRun findPatchingJobChildrenJobsByRunKey ${PATCHING_JOB_RUN_ID}
+                blcli_execute JobRun getJobRunId
+                blcli_execute Utility setTargetObject
+                blcli_execute Utility listPrint
+                blcli_storeenv PATCH_ANALYSIS_JOB_RUN_IDS
+                PATCH_ANALYSIS_JOB_RUN_IDS="$(awk 'NF' <<< "${PATCH_ANALYSIS_JOB_RUN_IDS}")"
+                echo "PATCH_ANALYSIS_JOB_RUN_IDS: ${PATCH_ANALYSIS_JOB_RUN_IDS}"
+                while read JOB_RUN_ID
+                                do
+                                echo "JOB_RUN_ID: ${JOB_RUN_ID}"
+                                blcli_execute JobRun findById ${JOB_RUN_ID}
+                                blcli_execute JobRun getType
+                                blcli_storeenv JOB_RUN_TYPE_ID
+                                echo "JOB_RUN_TYPE_ID: ${JOB_RUN_TYPE_ID}"
+                                if [[ ${JOB_RUN_TYPE_ID} = 7033 ]]
+                                                then
+                                                blcli_execute JobRun findById ${JOB_RUN_ID}
+                                                blcli_execute JobRun getJobKey
+                                                blcli_storeenv REMEDIATION_JOB_KEY
+                                                echo "REMEDIATION_JOB_KEY: ${REMEDIATION_JOB_KEY}"
+                                                blcli_execute LogItem getLogItemsByJobRun ${REMEDIATION_JOB_KEY} ${JOB_RUN_ID}
+                                                blcli_execute Utility storeTargetObject logItems
+                                                blcli_execute Utility listLength
+                                                blcli_storeenv LIST_LENGTH
+                                                if [[ ${LIST_LENGTH} -gt 0 ]]
+                                                                then
+                                                                for i in {0..$((${LIST_LENGTH}-1))}
+                                                                                do
+                                                                                blcli_execute Utility setTargetObject logItems
+                                                                                blcli_execute Utility listItemSelect ${i}
+                                                                                blcli_execute Utility setTargetObject
+                                                                                blcli_execute JobLogItem getMessage
+                                                                                blcli_storeenv MESSAGE
+                                                                                if ( grep -q "Created deploy job" <<< "${MESSAGE}" )
+                                                                                                then
+                                                                                                DEPLOY_JOB_NAME="$(grep "Created deploy job" <<< "${MESSAGE}" | cut -f2- -d: | sed "s/^ Jobs//")"
+                                                                                                echo "DEPLOY_JOB_NAME: ${DEPLOY_JOB_NAME}"
+                                                                                                blcli_execute DeployJob getDBKeyByGroupAndName "${DEPLOY_JOB_NAME%/*}" "${DEPLOY_JOB_NAME##*/}"
+                                                                                                blcli_storeenv DEPLOY_JOB_KEY
+                                                                                                echo "DEPLOY_JOB_KEY: ${DEPLOY_JOB_KEY}"
+                                                                                                DEPLOY_JOB_KEYS+=${DEPLOY_JOB_KEY}
+                                                                                fi
+                                                                                if ( grep -q "Created Batch Job" <<< "${MESSAGE}" )
+                                                                                                then
+                                                                                                BATCH_JOB_NAME="$(grep "Created Batch Job" <<< "${MESSAGE}" | cut -f2- -d: | sed "s/^ Jobs//")"
+                                                                                                echo "BATCH_JOB_NAME: ${BATCH_JOB_NAME}"
+                                                                                                blcli_execute BatchJob getDBKeyByGroupAndName "${BATCH_JOB_NAME%/*}" "${BATCH_JOB_NAME##*/}"
+                                                                                                blcli_storeenv batchJobKey
+                                                                                                blcli_execute BatchJob findAllSubJobHeadersByBatchJobKey ${batchJobKey}
+                                                                                                blcli_execute SJobHeader getDBKey
+                                                                                                blcli_execute Utility setTargetObject
+                                                                                                blcli_execute Utility listPrint
+                                                                                                blcli_storeenv batchMembers
+                                                                                                batchMembers="$(awk 'NF' <<< "${batchMembers}")"
+                                                                                                while read i
+                                                                                                                do
+                                                                                                                blcli_execute Job findByDBKey ${i}
+                                                                                                                blcli_execute Job getName
+                                                                                                                blcli_storeenv deployJobName
+                                                                                                                blcli_execute Job getGroupId
+                                                                                                                blcli_storeenv deployJobGroupId
+                                                                                                                blcli_execute Group getQualifiedGroupName 5005 ${deployJobGroupId}
+                                                                                                                blcli_storeenv deployGroupPath
+                                                                                                                blcli_execute DeployJob getDBKeyByGroupAndName "${deployGroupPath}" "${deployJobName}"
+                                                                                                                blcli_storeenv jobKey
+                                                                                                                if [[ "${DEPLOY_JOB_KEYS/${jobKey}}" = "${DEPLOY_JOB_KEYS}" ]]
+                                                                                                                                then
+                                                                                                                                echo "DEPLOY_JOB: ${deployGroupPath}/${deployJobName}"
+                                                                                                                                echo "DEPLOY_JOB_KEY: ${jobKey}"
+                                                                                                                                DEPLOY_JOB_KEYS+="${jobKey}"
+                                                                                                                fi
+                                                                                                done <<< "${batchMembers}"
+                                                                                fi
+                                                                done
+                                                else
+                                                                check_errs $? "Could not find job logs for ${REMEDIATION_JOB_KEY}..."
+                                                fi
+                                                break
+                                fi
+                done <<< "${PATCH_ANALYSIS_JOB_RUN_IDS}"
+}
+ 
+processDeployJobRuns()
+{
+                typeset -a SUB_JOB_RUN_IDS
+                local statusMap
+                if [[ -n "${DEPLOY_JOB_KEYS}" ]]
+                                then
+                                echo "DEPLOY_JOB_KEYS: ${DEPLOY_JOB_KEYS}"
+                                for i in {1..${#DEPLOY_JOB_KEYS}}
+                                                do
+                                                DEPLOY_JOB_RUN_ID=0
+                                                DEPLOY_JOB_RUN_COUNT=0
+                                                DEPLOY_JOB_KEY=${DEPLOY_JOB_KEYS[${i}]}
+                                                SUB_JOB_RUN_IDS=()
+                                                echo "Starting DEPLOY_JOB_LOOP..."
+                                                echo "DEPLOY_JOB_KEY: ${DEPLOY_JOB_KEY}"
+                                                blcli_execute Job jobKeyToJobId ${DEPLOY_JOB_KEY}
+                                                blcli_storeenv DEPLOY_JOB_ID
+                                                blcli_execute JobRun findJobRunCountByJobId ${DEPLOY_JOB_ID}
+                                                blcli_storeenv DEPLOY_JOB_RUN_COUNT
+                                                echo "DEPLOY_JOB_RUN_COUNT: ${DEPLOY_JOB_RUN_COUNT}"
+                                                if [[ ${DEPLOY_JOB_RUN_COUNT} -gt 0 ]]
+                                                                then
+                                                                blcli_execute JobRun findLastRunKeyByJobKeyIgnoreVersion ${DEPLOY_JOB_KEY}
+                                                                blcli_storeenv DEPLOY_JOB_RUN_KEY
+                                                                blcli_execute JobRun jobRunKeyToJobRunId ${DEPLOY_JOB_RUN_KEY}
+                                                                blcli_storeenv DEPLOY_JOB_RUN_ID
+                                                                echo "DEPLOY_JOB_RUN_ID: ${DEPLOY_JOB_RUN_ID}"
+                                                                blcli_execute Utility exportDeployRun "$deployGroupPath" "$deployJobName" "$DEPLOY_JOB_RUN_ID" "/tmp/remediation_deploy_job_run.csv"
+                                                fi
+                                                done <<< "${statusMap}"
+                else
+                                echo "No Deploy Job Keys found..."
+                fi
+}
+ 
+date
+PATCHING_JOB="/PatchAnalysisJob/Analyze2016NoDelta"
+blcli_execute PatchingJob getDBKeyByGroupAndName "${PATCHING_JOB%/*}" "${PATCHING_JOB##*/}"
+blcli_storeenv jobKey
+blcli_execute JobRun findLastRunKeyByJobKeyIgnoreVersion ${jobKey}
+blcli_storeenv jobRunKey
+blcli_execute JobRun jobRunKeyToJobRunId ${jobRunKey}
+blcli_storeenv PATCHING_JOB_RUN_ID
+typeset -a DEPLOY_JOB_KEYS
+processRemediationJobResult
+processDeployJobRuns

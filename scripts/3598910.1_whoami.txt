@@ -1,0 +1,10 @@
+hname="$(hostname)"
+exe_id="$(blid)"
+#cd //${hname}
+#WHOAMI=$(nexec $hname whoami)
+WHOAMI=$(whoami)
+echo "Script running as blid ${exe_id} on host ${hname}"
+echo "whoami: ${WHOAMI}"
+ls -ltr /etc/rsc
+#echo "env follows:"
+#env

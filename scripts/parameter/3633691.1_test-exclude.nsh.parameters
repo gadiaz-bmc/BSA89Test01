@@ -1,0 +1,5 @@
+{
+  "name" : "649724.1_test-exclude.nsh",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false
+}

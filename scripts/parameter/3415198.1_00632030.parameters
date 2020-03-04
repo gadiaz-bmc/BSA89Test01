@@ -1,0 +1,5 @@
+{
+  "name" : "00632030",
+  "scriptType" : "Execute the script separately against each host (using 'runscript')",
+  "allowRunWithNoTarget" : false
+}
